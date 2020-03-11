@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'login.apps.LoginConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+CRIPSY_TEMPLATE_PACK = 'bootstrap4'
+LOGIN_REDIRECT_URL = 'login-home'
+LOGIN_URL = 'login'

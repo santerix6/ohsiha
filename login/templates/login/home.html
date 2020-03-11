@@ -1,8 +1,10 @@
 {% extends "login/base.html" %}
 {% block content %}
+    {% if user.is_authenticated %}
     {% for post in post%}
       <h1>{{post.nimi}}</h1>
       <p>{{post.paikkakunta}}</p>
       <p>{{post.tauti}}</p>
     {% endfor %}
+    {% endif %}
 {% endblock content %}
