@@ -9,10 +9,21 @@
     <title>Korona virus sivusto</title>
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      {% if user.is_authenticated %}
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/logout">Logout</a>
+      <a class="nav-link" href="/lisaa">lisaa</a>
+      <a href="/editprofile">Edit Profile</a>
+      {% else %}
+      <a class="nav-link" href="/login">Login</a>
+      <a class="nav-link" href="/register">Register</a>
+      {% endif %}
+    </nav>
     <h1>Tervetuloa koronaan</h1>
     {% if user.is_authenticated %}
     <h3>Youre logged in</h3>
-    <a href="/editprofile">Edit Profile</a>
+
     <div class="col-md-8">
       {% if messages %}
         {% for message in messages %}
@@ -21,10 +32,6 @@
           </div>
         {% endfor %}
       {% endif %}
-      {% else %}
-      <h3>Youre not logged in </h3>
-      <a href="/register">Register Here!</a> <br>
-      <a href="/login">Login Here!</a>
       {% endif %}
       {% block content%}{% endblock %}
     </div>

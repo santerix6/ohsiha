@@ -4,6 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
+from.models import TestTaulu
+
+
 # Create your views here.
 post =[
     {
@@ -33,3 +36,17 @@ def register(request):
 @login_required
 def profile_edit(request):
     return render(request, 'login/editprofile.html')
+
+@login_required
+def lisaa(request):
+    if request.method == 'GET':
+        return render(request, 'login/lisaa.html')
+    if request.method =="POST":
+        print(request.POST.get("pva"))
+        print(request.POST.get("dis"))
+        print(request.POST.get("src"))
+        print(request.POST.get("infsrc"))
+        return redirect("login-home")
+    # testi = TestTaulu()
+    # testi.col = 'nicenice'
+    # testi.save()

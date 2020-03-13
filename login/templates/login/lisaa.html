@@ -1,0 +1,19 @@
+{% extends "login/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<form class="" action="" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="date">Päivä:</label>
+    <input type="date" name="pva" class="form-control">
+    <label for="dis">Sairaanhoitopiiri:</label>
+    <input type="text" name="dis" class="form-control" maxlength="25">
+    <label for="src">Tartunnan Alkuperämaa:</label>
+    <input type="text" name="src" class="form-control" maxlength="25">
+    <label for="infsrc">Tartunnan alkuperä:</label>
+    <input type="number" name="infsrc" class="form-control">
+  </div>
+  <button type="post" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock content %}
