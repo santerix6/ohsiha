@@ -42,11 +42,22 @@ def lisaa(request):
     if request.method == 'GET':
         return render(request, 'login/lisaa.html')
     if request.method =="POST":
-        print(request.POST.get("pva"))
-        print(request.POST.get("dis"))
-        print(request.POST.get("src"))
-        print(request.POST.get("infsrc"))
+        taulu = TestTaulu()
+        taulu.pva = request.POST.get("pva")
+        taulu.sairaanhoitopiiri = request.POST.get("dis")
+        taulu.alkuperamaa = request.POST.get("src")
+        taulu.alkupera = request.POST.get("infsrc")
+        taulu.lisaaja = request.user
+        taulu.save()
         return redirect("login-home")
     # testi = TestTaulu()
     # testi.col = 'nicenice'
     # testi.save()
+@login_required
+def listaa(request):
+    taulu = TestTaulu.objects.all().values()
+    print(taulu)
+    taulu = {
+        'taulu' : taulu
+    }
+    return render(request, 'login/listaa.html', taulu)
