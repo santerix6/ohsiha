@@ -66,15 +66,11 @@ def listaa(request):
 def api(request):
     data = requests.get(api_address).json()
     taulu = TestTaulu()
-    taulu.pva = data['confirmed'][0]['date']
-    taulu.sairaanhoitopiiri = data['confirmed'][0]['healthCareDistrict']
-    taulu.alkupera = data['confirmed'][0]['infectionSource']
-    taulu.alkuperamaa = data['confirmed'][0]['infectionSourceCountry']
-    taulu.lisaaja = request.user
-    taulu.save()
     for x in data['confirmed']:
-        print('id: ',x['id'])
-        print('date: ',x['date'])
-        print('HCD: ',x['healthCareDistrict'])
-        print('infectionSource: ', x['infectionSource'])
-        print('infectionSourceCountry: ',x['infectionSourceCountry'])
+        taulu.pva =x['date']
+        taulu.sairaanhoitopiiri = x['healthCareDistrict']
+        taulu.potilasid = x['id']
+        taulu.alkupera = x['infectionSource']
+        taulu.alkuperamaa = x['infectionSourceCountry']
+        taulu.lisaaja = request.user
+        taulu.save()
