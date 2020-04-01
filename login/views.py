@@ -5,7 +5,7 @@ from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
 from.models import TestTaulu
-
+import requests
 
 # Create your views here.
 post =[
@@ -15,6 +15,7 @@ post =[
         'tauti' : 'korona'
     }
 ]
+api_address = "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData"
 def home (request):
     context = {
         'post' :post
@@ -61,3 +62,19 @@ def listaa(request):
         'taulu' : taulu
     }
     return render(request, 'login/listaa.html', taulu)
+@login_required
+def api(request):
+    data = requests.get(api_address).json()
+    taulu = TestTaulu()
+    taulu.pva = data['confirmed'][0]['date']
+    taulu.sairaanhoitopiiri = data['confirmed'][0]['healthCareDistrict']
+    taulu.alkupera = data['confirmed'][0]['infectionSource']
+    taulu.alkuperamaa = data['confirmed'][0]['infectionSourceCountry']
+    taulu.lisaaja = request.user
+    taulu.save()
+    for x in data['confirmed']:
+        print('id: ',x['id'])
+        print('date: ',x['date'])
+        print('HCD: ',x['healthCareDistrict'])
+        print('infectionSource: ', x['infectionSource'])
+        print('infectionSourceCountry: ',x['infectionSourceCountry'])
