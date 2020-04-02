@@ -57,7 +57,6 @@ def lisaa(request):
 @login_required
 def listaa(request):
     taulu = TestTaulu.objects.all().values()
-    print(taulu)
     taulu = {
         'taulu' : taulu
     }
@@ -65,6 +64,7 @@ def listaa(request):
 @login_required
 def api(request):
     data = requests.get(api_address).json()
+    TestTaulu.objects.all().delete()
     taulu = TestTaulu()
     for x in data['confirmed']:
         taulu.pva =x['date']
@@ -74,3 +74,4 @@ def api(request):
         taulu.alkuperamaa = x['infectionSourceCountry']
         taulu.lisaaja = request.user
         taulu.save()
+    return redirect("login-home")

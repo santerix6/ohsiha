@@ -2,13 +2,48 @@
 {% load crispy_forms_tags %}
 {% block content %}
 {% if user.is_authenticated %}
-{% for x in taulu %}
-  <h1>{{forloop.counter}}</h1>
-  <p>{{x.pva}}</p>
-  <p>{{x.sairaanhoitopiiri}}</p>
-  <p>{{x.alkuperamaa}}</p>
-  <p>{{x.alkupera}}</p>
-  <p>{{x.lisaaja_id}}</p>
-{% endfor %}
+
+
+  <div class="container">
+    <h3>Tapauksia yhteensä: {{taulu.count}}</h3>
+    <table id="table_id" class="table" >
+
+        <thead>
+          <tr>
+            <td>PotilasID</td>
+            <td>Päivämäärä</td>
+            <td>Sairaanhoitopiiri</td>
+            <td>Alkuperämaa</td>
+            <td>Tartuttaja</td>
+          </tr>
+        </thead>
+      <tbody>
+        {% for x in taulu %}
+        <tr>
+        <td>{{x.potilasid}}</td>
+        <td>{{x.pva}}</td>
+        <td>{{x.sairaanhoitopiiri}}</td>
+        <td>
+          {% if x.alkuperamaa %}
+            {{x.alkuperamaa}}
+          {% else %}
+              Ei Tiedossa
+          {% endif %}
+        </td>
+        <td>
+          {% if x.alkupera == "unknown" %}
+            Ei Tiedossa
+          {% else %}
+              {{x.alkupera}}
+          {% endif %}
+          </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+
+
+    </table>
+  </div>
+
 {% endif %}
 {% endblock content %}
