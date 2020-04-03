@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
-from.models import TestTaulu
+from.models import TestTaulu, KuolemaTaulu
 import requests
 
 # Create your views here.
@@ -55,17 +55,30 @@ def lisaa(request):
     # testi.col = 'nicenice'
     # testi.save()
 @login_required
-def listaa(request):
+def listaa_tapaukset(request):
     taulu = TestTaulu.objects.all().values()
     taulu = {
         'taulu' : taulu
     }
     return render(request, 'login/listaa.html', taulu)
 @login_required
+def listaa_kuolemat(request):
+    kuolemat = KuolemaTaulu.objects.all().values()
+    kuolemat = {
+        'kuolemat': kuolemat
+    }
+    return render(request, 'login/kuolemat.html', kuolemat)
+@login_required
 def api(request):
     data = requests.get(api_address).json()
     TestTaulu.objects.all().delete()
     taulu = TestTaulu()
+    ktaulu = KuolemaTaulu()
+    for y in data['deaths']:
+        ktaulu.kuolemaid = y['id']
+        ktaulu.pva = y['date']
+        ktaulu.sairaanhoitopiiri = y['healthCareDistrict']
+        ktaulu.save()
     for x in data['confirmed']:
         taulu.pva =x['date']
         taulu.sairaanhoitopiiri = x['healthCareDistrict']

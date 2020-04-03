@@ -1,0 +1,38 @@
+{% extends "login/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.is_authenticated %}
+
+
+  <div class="container">
+    <h3>Tapauksia yhteensä: {{taulu.count}}</h3>
+    <table id="table_id" class="table table-bordered" >
+        <thead class="thead-dark">
+          <tr>
+            <th>KuolemaID</th>
+            <th>Päivämäärä</th>
+            <th>Sairaanhoitopiiri</th>
+          </tr>
+        </thead>
+      <tbody>
+        {% for x in kuolemat %}
+        <tr>
+        <td>{{x.kuolemaid}}</td>
+        <td>{{x.pva}}</td>
+        <td>
+          {% if x.sairaanhoitopiiri %}
+            {{x.sairaanhoitopiiri}}
+          {% else %}
+            Ei Tiedossa
+          {% endif %}
+        </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+
+
+    </table>
+  </div>
+
+{% endif %}
+{% endblock content %}
