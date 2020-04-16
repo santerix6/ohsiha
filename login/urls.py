@@ -12,5 +12,6 @@ urlpatterns = [
     path('lisaa/', views.lisaa, name='lisaa'),
     path('listaa/tapaukset/', views.listaa_tapaukset, name='listaa'),
     path('api/', views.api, name="apitest"),
-    path('listaa/kuolemat/', views.listaa_kuolemat, name='kuolemat')
+    path('listaa/kuolemat/', views.listaa_kuolemat, name='kuolemat'),
+    path('visual/', views.visualisoi, name='visual'),
 ]

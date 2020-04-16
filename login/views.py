@@ -6,6 +6,7 @@ from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
 from.models import TestTaulu, KuolemaTaulu
 import requests
+import datetime
 
 # Create your views here.
 post =[
@@ -15,7 +16,7 @@ post =[
         'tauti' : 'korona'
     }
 ]
-api_address = "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData"
+api_address = "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2"
 def home (request):
     context = {
         'post' :post
@@ -72,19 +73,45 @@ def listaa_kuolemat(request):
 def api(request):
     data = requests.get(api_address).json()
     TestTaulu.objects.all().delete()
+
+
     taulu = TestTaulu()
     ktaulu = KuolemaTaulu()
     for y in data['deaths']:
         ktaulu.kuolemaid = y['id']
-        ktaulu.pva = y['date']
+        a = y['date'].split('T')
+        b = a[0]
+        ktaulu.pva = b
         ktaulu.sairaanhoitopiiri = y['healthCareDistrict']
         ktaulu.save()
     for x in data['confirmed']:
-        taulu.pva =x['date']
+        ktaulu.kuolemaid = y['id']
+        a = x['date'].split('T')
+        b = a[0]
+        taulu.pva = b
         taulu.sairaanhoitopiiri = x['healthCareDistrict']
         taulu.potilasid = x['id']
         taulu.alkupera = x['infectionSource']
         taulu.alkuperamaa = x['infectionSourceCountry']
         taulu.lisaaja = request.user
         taulu.save()
+    messages.success(request, f'Data päivitetty!')
     return redirect("login-home")
+@login_required
+def visualisoi(request):
+    day_delta = datetime.timedelta(days=1)
+    end_date = datetime.date.today()
+    start_date = datetime.date(2020,1,29)
+    keissi_maarat = []
+    for i in range((end_date - start_date).days):
+        date = start_date + i*day_delta
+        kaset = TestTaulu.objects.filter(pva=date).count()
+        strdate = date.strftime("%m/%d/%Y")
+        case = {
+            'paiva' : strdate,
+            'lkm' : kaset
+        }
+        keissi_maarat.append(case)
+    data =  keissi_maarat
+    print(data)
+    return render(request, "login/visual.html", {'data': data})

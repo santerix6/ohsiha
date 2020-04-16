@@ -12,10 +12,13 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       {% if user.is_authenticated %}
       <a class="nav-link" href="/">Home</a>
-      <a class="nav-link" href="/logout">Logout</a>
       <a class="nav-link" href="/lisaa">lisaa</a>
-      <a class="nav-link" href="/listaa">listaa</a>
+      <a class="nav-link" href="/listaa/tapaukset">listaa tapaukset</a>
+      <a class="nav-link" href="/listaa/kuolemat">listaa kuolemat</a>
+      <a class="nav-link" href="/visual">tapaukset päivittäin</a>
+      <a class="nav-link" href="/api">Päivitä tiedot</a>
       <a href="/editprofile">Edit Profile</a>
+      <a class="nav-link" href="/logout">Logout</a>
       {% else %}
       <a class="nav-link" href="/">Home</a>
       <a class="nav-link" href="/login">Login</a>
@@ -35,17 +38,24 @@
       {% endif %}
       {% endif %}
       {% block content%}{% endblock %}
+      {% block scripts%}{% endblock %}
     </div>
 </body>
+<script src="https://code.highcharts.com/highcharts.js"> </script>
+<script src="https://code.highcharts.com/modules/exporting.js"> </script>
+<script src="https://code.highcharts.com/modules/export-data.js"> </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
 <title>Korona virus sivusto</title>
 <script>
   $(document).ready( function () {
     $('#table_id').DataTable();
   } );
+
 </script>
+
 </html>

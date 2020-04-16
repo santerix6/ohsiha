@@ -1,0 +1,32 @@
+{% extends "login/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto" class="border"></div>
+
+{% endblock content %}
+
+{% block scripts%}
+<script src="https://code.highcharts.com/highcharts.js"> </script>
+<script>
+  Highcharts.chart('container', {
+     chart: {
+         type: 'column'
+     },
+     title: {
+         text: 'Covid-19 tapaukset Suomessa päivittäin'
+     },
+     xAxis: {
+         categories: [
+           {% for entry in data %}'{{ entry.paiva }} Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+         ]
+     },
+     series: [{
+         name: 'Tapaukset',
+         data: [
+           {% for entry in data %}{{ entry.lkm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+         ],
+         color: 'green'
+     }]
+ });
+</script>
+{% endblock %}
