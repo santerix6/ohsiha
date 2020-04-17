@@ -103,15 +103,31 @@ def visualisoi(request):
     end_date = datetime.date.today()
     start_date = datetime.date(2020,1,29)
     keissi_maarat = []
+    kuolemat = []
+    total = 0
     for i in range((end_date - start_date).days):
         date = start_date + i*day_delta
         kaset = TestTaulu.objects.filter(pva=date).count()
+        total = total + kaset
         strdate = date.strftime("%m/%d/%Y")
         case = {
             'paiva' : strdate,
-            'lkm' : kaset
+            'lkm' : kaset,
+            'kumu' : total
         }
         keissi_maarat.append(case)
+    total_kuolemat = 0
+    for i in range((end_date - start_date).days):
+        date = start_date + i*day_delta
+        kaset = KuolemaTaulu.objects.filter(pva=date).count()
+        total_kuolemat = total_kuolemat + kaset
+        strdate = date.strftime("%m/%d/%Y")
+        case = {
+            'paiva' : strdate,
+            'lkm' : kaset,
+            'kumu' : total_kuolemat
+        }
+        kuolemat.append(case)
     data =  keissi_maarat
-    print(data)
-    return render(request, "login/visual.html", {'data': data})
+    data1 = kuolemat
+    return render(request, "login/visual.html", {'data': data, 'data1':data1})

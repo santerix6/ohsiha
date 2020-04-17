@@ -2,31 +2,66 @@
 {% load crispy_forms_tags %}
 {% block content %}
   <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto" class="border"></div>
+  <div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto" class="border"></div>
 
 {% endblock content %}
 
 {% block scripts%}
 <script src="https://code.highcharts.com/highcharts.js"> </script>
 <script>
-  Highcharts.chart('container', {
-     chart: {
-         type: 'column'
-     },
+  Highcharts.chart('container1', {
      title: {
-         text: 'Covid-19 tapaukset Suomessa päivittäin'
+         text: 'Covid-19 kuolemien kehitys Suomessa päivittäin'
      },
      xAxis: {
          categories: [
-           {% for entry in data %}'{{ entry.paiva }} Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+           {% for entry in data1 %}'{{ entry.paiva }} Class'{% if not forloop.last %}, {% endif %}{% endfor %}
          ]
      },
      series: [{
-         name: 'Tapaukset',
+         type: 'line',
+         name: 'Tapaukset yhteensä',
          data: [
-           {% for entry in data %}{{ entry.lkm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+           {% for entry in data1 %}{{ entry.kumu }}{% if not forloop.last %}, {% endif %}{% endfor %}
          ],
          color: 'green'
-     }]
+     }, {
+         type: 'column',
+         name: 'Päivittäiset tapaukset',
+         data: [
+           {% for entry in data1 %}{{ entry.lkm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+         ],
+         color: 'red'
+     }
+     ]
+ });
+</script>
+<script>
+  Highcharts.chart('container', {
+    title: {
+        text: 'Covid-19 tapausten kehitys Suomessa päivittäin'
+    },
+    xAxis: {
+        categories: [
+          {% for entry in data %}'{{ entry.paiva }} Class'{% if not forloop.last %}, {% endif %}{% endfor %}
+        ]
+    },
+    series: [{
+        type: 'line',
+        name: 'Tapaukset yhteensä',
+        data: [
+          {% for entry in data %}{{ entry.kumu }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        ],
+        color: 'green'
+    }, {
+        type: 'column',
+        name: 'Päivittäiset tapaukset',
+        data: [
+          {% for entry in data %}{{ entry.lkm }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        ],
+        color: 'red'
+    }
+    ]
  });
 </script>
 {% endblock %}
