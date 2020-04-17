@@ -20,14 +20,14 @@
      },
      series: [{
          type: 'line',
-         name: 'Tapaukset yhteensä',
+         name: 'Kuolemat yhteensä',
          data: [
            {% for entry in data1 %}{{ entry.kumu }}{% if not forloop.last %}, {% endif %}{% endfor %}
          ],
          color: 'green'
      }, {
          type: 'column',
-         name: 'Päivittäiset tapaukset',
+         name: 'Päivittäiset kuolemat',
          data: [
            {% for entry in data1 %}{{ entry.lkm }}{% if not forloop.last %}, {% endif %}{% endfor %}
          ],
